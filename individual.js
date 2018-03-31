@@ -21,25 +21,38 @@ function Individual(dna) {
   }
 
   this.evaluate = function() {
-    var d = dist(this.position.x, this.position.y, target.x, target.y);
+    if (!this.crashed) {
+      var d = dist(this.position.x, this.position.y, target.x, target.y);
 
-    this.fitness = 1 / d;
+      this.fitness = 1 / d;
+
+      if (this.succeeded) {
+        this.fitness *= 210 * (1 / this.quickness);
+      }
+    }
   }
 
   this.update = function() {
-    this.applyForce(this.dna.genes[count]);
-    this.velocity.add(this.acceleration);
-    this.position.add(this.velocity);
-    this.acceleration.mult(0);
-
-    if (this.position.x < 0 || this.position.x > width) {
-      this.velocity.x *= -1;
-      this.velocity.mult(0.8);
+    if (dist(this.position.x, this.position.y, target.x, target.y) < 10) {
+      this.succeeded = true;
+      this.quickness = count;
     }
 
-    if (this.position.y < 0 || this.position.y > height) {
-      this.crashed = true;
-      this.fitness = 0;
+    if (!this.succeeded) {
+      this.applyForce(this.dna.genes[count]);
+      this.velocity.add(this.acceleration);
+      this.position.add(this.velocity);
+      this.acceleration.mult(0);
+
+      if (this.position.x < 0 || this.position.x > width) {
+        this.velocity.x *= -1;
+        this.velocity.mult(0.8);
+      }
+
+      if (this.position.y > height) {
+        this.crashed = true;
+        this.fitness = 0;
+      }
     }
   }
 

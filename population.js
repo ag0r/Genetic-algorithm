@@ -27,6 +27,8 @@ function Population() {
       }
     }
 
+    this.matingPool = []
+
     for (var i = 0; i < this.populationSize; i++) {
       this.individuals[i].fitness /= maxFit;
     }
@@ -47,6 +49,7 @@ function Population() {
       var parentB = random(this.matingPool).dna;
       var childDNA = parentA.crossOver(parentB);
 
+      childDNA.mutate();
       newIndividuals[i] = new Individual(childDNA);
     }
 
