@@ -13,6 +13,10 @@ function Population() {
     for (var i = 0; i < this.populationSize; i++) {
       this.individuals[i].update();
       this.individuals[i].show();
+      if (obstacle.collide(this.individuals[i])) {
+        this.individuals[i].crashed = true;
+        this.individuals[i].fitness = 0;
+      }
     }
   }
 

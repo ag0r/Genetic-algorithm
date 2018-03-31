@@ -33,36 +33,38 @@ function Individual(dna) {
   }
 
   this.update = function() {
-    if (dist(this.position.x, this.position.y, target.x, target.y) < 10) {
-      this.succeeded = true;
-      this.quickness = count;
-    }
+    if (!this.crashed) {
+      if (dist(this.position.x, this.position.y, target.x, target.y) < 10) {
+        this.succeeded = true;
+        this.quickness = count;
+      }
 
-    if (!this.succeeded) {
-      this.applyForce(this.dna.genes[count]);
-      this.velocity.add(this.acceleration);
-      this.position.add(this.velocity);
-      this.acceleration.mult(0);
+      if (!this.succeeded) {
+        this.applyForce(this.dna.genes[count]);
+        this.velocity.add(this.acceleration);
+        this.position.add(this.velocity);
+        this.acceleration.mult(0);
 
-      if (this.position.x < 0 || this.position.x > width) {
-        if (this.position.x < 0) {
-          this.position.x = 0;
-        } else if (this.position.x > width) {
-          this.position.x = width;
+        if (this.position.x < 0 || this.position.x > width) {
+          if (this.position.x < 0) {
+            this.position.x = 0;
+          } else if (this.position.x > width) {
+            this.position.x = width;
+          }
+          this.velocity.x *= -1;
+          this.velocity.mult(0.8);
         }
-        this.velocity.x *= -1;
-        this.velocity.mult(0.8);
-      }
 
-      if (this.position.y > height) {
-        this.crashed = true;
-        this.fitness = 0;
-      }
+        if (this.position.y > height) {
+          this.crashed = true;
+          this.fitness = 0;
+        }
 
-      if (this.position.y < 0) {
-        this.position.y = 0;
-        this.velocity.y *= -1;
-        this.velocity.mult(0.8);
+        if (this.position.y < 0) {
+          this.position.y = 0;
+          this.velocity.y *= -1;
+          this.velocity.mult(0.8);
+        }
       }
     }
   }
