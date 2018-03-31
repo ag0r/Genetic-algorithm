@@ -1,13 +1,26 @@
 var population;
+var lifespan = 200;
+var count = 0;
+var target;
 
 function setup() {
-  createCanvas(1000, 800);
+  createCanvas(600, 400);
 
   population = new Population();
-  // test.applyForce(createVector(0, -5))
+
+  target = createVector(width / 2, 50);
 }
 
 function draw() {
   background(0);
   population.run();
+  count++;
+
+  ellipse(target.x, target.y, 16, 16)
+
+  if (count == lifespan) {
+    population.evaluate();
+    population.selection();
+    count = 0;
+  }
 }
