@@ -45,6 +45,11 @@ function Individual(dna) {
       this.acceleration.mult(0);
 
       if (this.position.x < 0 || this.position.x > width) {
+        if (this.position.x < 0) {
+          this.position.x = 0;
+        } else if (this.position.x > width) {
+          this.position.x = width;
+        }
         this.velocity.x *= -1;
         this.velocity.mult(0.8);
       }
@@ -52,6 +57,12 @@ function Individual(dna) {
       if (this.position.y > height) {
         this.crashed = true;
         this.fitness = 0;
+      }
+
+      if (this.position.y < 0) {
+        this.position.y = 0;
+        this.velocity.y *= -1;
+        this.velocity.mult(0.8);
       }
     }
   }
